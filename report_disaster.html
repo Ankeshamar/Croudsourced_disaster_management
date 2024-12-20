@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Disaster</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        input, textarea, button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .error-message {
+            color: red;
+            font-size: 12px;
+            margin: -8px 0 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Report a Disaster</h1>
+        <form id="report-form">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" placeholder="Enter your name" required />
+            <p class="error-message" id="name-error"></p>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required />
+            <p class="error-message" id="email-error"></p>
+
+            <label for="phone">Phone:</label>
+            <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required />
+            <p class="error-message" id="phone-error"></p>
+
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" placeholder="Describe the disaster..." rows="4" required></textarea>
+            <p class="error-message" id="description-error"></p>
+
+            <label for="image">Upload Image:</label>
+            <input type="file" id="image" name="image" accept="image/*;capture=camera" required />
+            <p class="error-message" id="image-error"></p>
+
+            <button type="button" id="get-location">Get Current Location</button>
+            <p id="location">Location will appear here...</p>
+            <input type="hidden" id="latitude" />
+            <input type="hidden" id="longitude" />
+
+            <button type="submit" id="submit-button" disabled>Submit</button>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById("report-form");
+        const locationButton = document.getElementById("get-location");
+        const locationDisplay = document.getElementById("location");
+        const submitButton = document.getElementById("submit-button");
+        const latitudeInput = document.getElementById("latitude");
+        const longitudeInput = document.getElementById("longitude");
+
+        let locationObtained = false;
+
+        // Get Location
+        locationButton.addEventListener("click", () => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const latitude = position.coords.latitude;
+                        const longitude = position.coords.longitude;
+
+                        // Update inputs and display location
+                        latitudeInput.value = latitude;
+                        longitudeInput.value = longitude;
+                        locationDisplay.textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
+
+                        locationObtained = true;
+                        submitButton.disabled = false; // Enable Submit button
+                    },
+                    (error) => {
+                        alert("Unable to fetch location. Please allow location access.");
+                        console.error("Geolocation error:", error);
+                    }
+                );
+            } else {
+                alert("Geolocation is not supported by your browser.");
+            }
+        });
+
+        // Handle Form Submission
+        form.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            // Check if location is obtained
+            if (!locationObtained) {
+                alert("Please fetch your location before submitting.");
+                return;
+            }
+
+            // Get all form values
+            const report = {
+                name: document.getElementById("name").value,
+                email: document.getElementById("email").value,
+                phone: document.getElementById("phone").value,
+                description: document.getElementById("description").value,
+                latitude: latitudeInput.value,
+                longitude: longitudeInput.value,
+                imageUrl: localStorage.getItem("imageUrl") || "" // Placeholder for uploaded image
+            };
+
+            // Retrieve existing reports from localStorage
+            const reports = JSON.parse(localStorage.getItem("disasterReports")) || [];
+            reports.push(report);
+
+            // Save back to localStorage
+            localStorage.setItem("disasterReports", JSON.stringify(reports));
+
+            alert("Report submitted successfully!");
+
+            // Redirect to home page
+            window.location.href = "index.html"; // Replace with your home page file name
+        });
+
+        // Handle File Upload for Image (Save as Base64)
+        const imageInput = document.getElementById("image");
+        imageInput.addEventListener("change", (event) => {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function () {
+                localStorage.setItem("imageUrl", reader.result);
+            };
+            if (file) reader.readAsDataURL(file);
+        });
+    </script>
+</body>
+</html>

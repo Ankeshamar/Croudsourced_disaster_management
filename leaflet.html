@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disaster Map with Routing</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
+    <style>
+        #map {
+            height: 100vh;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+    <script>
+        // Step 1: Initialize the map
+        const map = L.map('map').setView([20.5937, 78.9629], 5); // Centered on India
+
+        // Step 2: Add OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors',
+        }).addTo(map);
+
+        // Step 3: Retrieve approved disaster reports from localStorage
+        const approvedReports = JSON.parse(localStorage.getItem("approvedDisasterReports")) || [];
+
+        // Step 4: Add markers for approved reports and enable routing
+        if (approvedReports.length === 0) {
+            console.log("Approved Reports from localStorage:", approvedReports);
+        } else {
+            approvedReports.forEach((report) => {
+                if (report.lat && report.lon) {
+                    const marker = L.marker([report.lat, report.lon]).addTo(map);
+                    marker.bindPopup(`
+                        <b>${report.name}</b><br>${report.description}<br>
+                        <button style="background-color: #007BFF; color: white; border: none; padding: 5px 10px; cursor: pointer;" 
+                            onclick="routeTo(${report.lat}, ${report.lon})">Get Directions</button>
+                    `);
+                } else {
+                    console.error("Invalid coordinates for report:", report);
+                }
+            });
+        }
+
+        // Step 5: Define a function to create a route
+        function routeTo(lat, lon) {
+            // Clear any existing routes
+            if (map.routingControl) {
+                map.removeControl(map.routingControl);
+            }
+
+            navigator.geolocation.getCurrentPosition((position) => {
+                const userLat = position.coords.latitude;
+                const userLon = position.coords.longitude;
+
+            // Add routing control for directions
+            map.routingControl = L.Routing.control({
+                waypoints: [
+                    L.latLng(map.getCenter()), // Current center (or change to user's current location)
+                    L.latLng(lat, lon) // Disaster location
+                ],
+                routeWhileDragging: true,
+                geocoder: L.Control.Geocoder.nominatim()
+            }).addTo(map);
+
+            map.setView([lat, lon], 10); // Zoom into the location
+        }, (error) => {
+        alert("Could not get your location. Routing from map center.");
+        map.routingControl = L.Routing.control({
+            waypoints: [
+                L.latLng(map.getCenter()),
+                L.latLng(lat, lon)
+            ],
+            routeWhileDragging: true
+        }).addTo(map);
+    });
+}
+    </script>
+</body>
+</html>
