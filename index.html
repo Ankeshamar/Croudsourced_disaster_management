@@ -6,79 +6,135 @@
     <title>Disaster Management System</title>
     <link rel="stylesheet" href="style.css">
     <style>
+        /* Global Styles */
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f4f4f9;
+            font-family: 'Poppins', sans-serif;
+            background: #F4F4F4;
+            color: #333;
+            line-height: 1.6;
         }
+
+        /* Navbar */
         .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 20px;
-            background: #007BFF;
-            color: white;
+            padding: 15px 30px;
+            background: rgba(0, 45, 98, 0.9);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
-        .navbar .icon img {
-            border-radius: 50%;
-        }
+
         .navbar .menu ul {
             list-style: none;
             display: flex;
+            gap: 20px;
             margin: 0;
             padding: 0;
         }
-        .navbar .menu ul li {
-            margin: 0 10px;
-        }
+
         .navbar .menu ul li a {
-            color: white;
+            color: #fff;
             text-decoration: none;
+            font-size: 1rem;
             font-weight: bold;
+            transition: color 0.3s ease;
         }
+
+        .navbar .menu ul li a:hover {
+            color: #FF6F00;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: url('firefighter-man-help-asian-little-600nw-2200331747.webp') no-repeat center center/cover;
+            text-align: center;
+            padding: 150px 20px;
+            color: #fff;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin: 0 0 20px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 10px auto;
+        }
+
+        .hero .btn {
+            background: #FF6F00;
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-transform: uppercase;
+            font-size: 1rem;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .hero .btn:hover {
+            transform: scale(1.1);
+            background: #e65c00;
+        }
+
+        /* Content Section */
         .content {
-            text-align: center;
-            padding: 50px;
-            background: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background: #fff;
+            padding: 40px 20px;
             margin: 30px auto;
-            max-width: 800px;
-        }
-        .content h1, .content h2 {
-            color: #007BFF;
-        }
-        .content p {
-            font-size: 1.1em;
-            color: #333;
-            margin: 20px 0;
-        }
-        .btn {
-            background: #007BFF;
-            color: white;
-            padding: 10px 20px;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .btn:hover {
-            background: #0056b3;
-        }
-        .footer {
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
             text-align: center;
-            background: #007BFF;
-            color: white;
-            padding: 10px;
-            margin-top: 30px;
         }
+
+        /* Footer */
+        .footer {
+            background: #002D62;
+            color: #fff;
+            text-align: center;
+            padding: 20px 10px;
+            font-size: 0.9rem;
+            position: relative;
+        }
+
+        .footer a {
+            color: #FF6F00;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .content {
+            animation: fadeIn 1s ease-in-out;
+        }
+
     </style>
 </head>
 <body>
 
     <div class="navbar">
         <div class="icon">
-            <img src="SRA.png" alt="Logo" width="100px" height="100px">
+            <img src="SRA.png" alt="Logo" width="80px" height="80px">
         </div>
         <div class="menu">
             <ul>
@@ -89,14 +145,10 @@
         </div>
     </div>
 
-    <div class="content">
-        <h1>Welcome to the Disaster Management System</h1>
-        <p>
-            This platform enables individuals to report disasters in real-time, providing accurate location data and descriptions to help authorities respond effectively. 
-        </p>
-        <p>
-            Your contribution could save lives and help us mitigate the impact of disasters.
-        </p>
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1>Disaster Management System</h1>
+        <p>Empowering communities to respond to disasters efficiently and effectively. Together, we can make a difference.</p>
         <a href="report_disaster.html"><button class="btn">Report a Disaster</button></a>
     </div>
 
@@ -107,11 +159,11 @@
             <input type="password" id="password" placeholder="Enter Password" required style="width: 70%; padding: 10px; margin-bottom: 20px;">
             <button class="btn" type="submit">Login</button>
         </form>
-        <p>Don't have an account? <a href="register.html" style="color: #007BFF; text-decoration: underline;">Register here</a></p>
+        <p>Don't have an account? <a href="register.html" style="color: #FF6F00; text-decoration: underline;">Register here</a></p>
     </div>
 
     <div class="footer">
-        <p>© 2024 Disaster Management System </p>
+        <p>© 2024 Disaster Management System | <a href="privacy.html">Privacy Policy</a></p>
     </div>
 
     <script>
@@ -141,7 +193,7 @@
                 if (data.role === "editor") {
                     window.location.href = "editor_dashboard.html"; // Redirect editors
                 } else {
-                    window.location.href = "dashboard.html"; // Redirect regular users
+                    window.location.href = "home.html"; // Redirect regular users
                 }
             } else {
                 alert(data.message); // Display error message

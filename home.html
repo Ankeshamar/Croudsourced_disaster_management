@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Disaster Management</title>
+    <style>
+        /* Global Styles */
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #F4F4F4;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: rgba(0, 45, 98, 0.9);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar img {
+            height: 50px;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar ul li {
+            margin: 0;
+        }
+
+        .navbar ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .navbar ul li a:hover {
+            color: #FF6F00;
+        }
+
+        /* Main Section */
+        main {
+            text-align: center;
+            padding: 100px 20px;
+            background: #fff;
+        }
+
+        main h1 {
+            font-size: 3rem;
+            color: rgba(0, 45, 98, 0.9);
+            margin-bottom: 20px;
+        }
+
+        main p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 10px auto 30px;
+        }
+
+        main button {
+            background: #FF6F00;
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-transform: uppercase;
+            font-size: 1rem;
+            transition: transform 0.3s ease, background 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        main button:hover {
+            transform: scale(1.1);
+            background: #e65c00;
+        }
+
+        /* Footer */
+        .footer {
+            background: #002D62;
+            color: #fff;
+            text-align: center;
+            padding: 20px 10px;
+            font-size: 0.9rem;
+        }
+
+        .footer a {
+            color: #FF6F00;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <img src="logo.png" alt="Logo">
+        <nav>
+            <ul>
+                <li><a href="home.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="profile.html">Profile</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1>Welcome Back!</h1>
+        <p>Access exclusive features and manage disaster data effectively.</p>
+        <button>Explore Features</button>
+    </main>
+    <footer class="footer">
+        <p>© 2024 Disaster Management System | <a href="privacy.html">Privacy Policy</a></p>
+    </footer>
+</body>
+</html>
